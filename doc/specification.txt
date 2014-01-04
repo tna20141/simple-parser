@@ -28,8 +28,9 @@ and the nodes (elements, attributes, texts) will be saved on a tree structure.
 
 The specific behaviors of this function include:
 	- Parse document for XML element, attribute and text nodes
-	- Ignore trivial whitespaces
-	- Regconize elements with no closing tags (for example, </br>)
+	- All whitespaces before the first and after the last non-whitespace character in a text node 
+	  are ignored
+	- Regconize elements with no closing tags (for example, <br />)
 	- The XML declaration, if exists, will be saved as is and separated from the DOM tree
 
 3.1.3. Limitations
