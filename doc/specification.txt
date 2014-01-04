@@ -82,3 +82,12 @@ The cases that generate fatal errors include:
 	- Encountering a corrupted element (wrong tag format...) when parsing
 	- Error when generating the document (the tree is corrupted)
 	- All the other errors (file handling, pointers problem...)
+
+5. Potential
+
+5.1. Functionalities
+
+The simple parser might be expanded to have the following functions:
+	- DOM tree inspection operations (API for getting child nodes, parent nodes, attributes etc.).
+	- DOM tree manipulation operations (API for adding, removing nodes,...).
+	- XPath
