@@ -1,0 +1,83 @@
+SIMPLE PARSER
+=============
+
+1. OVERVIEW
+
+This simple parser is used to parse XML documents. It has 2 main purposes:
+	- Parse XML documents and generate a DOM tree for every document it parses
+	- Genrate the original XML documents from the DOM trees
+More functionality can be added to the parser in the future.
+
+2. PURPOSE
+
+The purpose of the making of this program is for educational, training purposes and also for fun. 
+This parser is not intended to be used in real-world serious situation as there are a lot of better
+parsers out there. This parser only deals with the basic functionalities. Besides, this parser is 
+not likely to be maintained over time.
+
+3. DETAILED SPECIFICATION
+
+3.1. Document parsing
+
+3.1.1. Description
+
+The most important function of the parser. The document is parsed (probably character by character) 
+and the nodes (elements, attributes, texts) will be saved on a tree structure.
+
+3.1.2. Behaviors
+
+The specific behaviors of this function include:
+	- Parse document for XML element, attribute and text nodes
+	- Ignore trivial whitespaces
+	- Regconize elements with no closing tags (for example, </br>)
+	- The XML declaration, if exists, will be saved as is and separated from the DOM tree
+
+3.1.3. Limitations
+
+The limitations of this function include:
+	- No namespaces (the namespace will be included in the element's name)
+	- No special character encoding
+	- Only ASCII character set (for simplicity)
+
+3.2. Document generation
+
+3.2.1. Description
+
+This function takes a DOM tree, reads its nodes and generate the corresponding XML document.
+
+3.2.2. Behaviors
+
+The specific behaviors of this function include:
+	- Proper indentation, with 1 tab further in for each level deeper
+	- 1 line for each element in the document
+	- The XML declaration is kept indentical from the original document
+
+3.1.3. Limitations
+
+The limitations of this function include:
+	- No namespaces
+	- No special character encoding
+	- Only ASCII character set (for simplicity)
+
+4. ERROR HANDLING
+
+4.1. Description
+
+There will only 2 kinds of error: fatal and non-fatal error. When encountering a non-fatal error, 
+the parser will abandon the work that is related to that error and move on. When encountering a 
+fatal error, the parser will stop running. Almost all errors are logged (to files or to screen).
+
+4.2. Error cases
+
+4.2.1. Non-fatal error
+
+The cases that generate non-fatal errors include:
+	- Encountering a corrupted XML declaration when parsing
+	- Encountering a corrupted attribute when parsing
+
+4.2.2. Fatal error
+
+The cases that generate fatal errors include:
+	- Encountering a corrupted element (wrong tag format...) when parsing
+	- Error when generating the document (the tree is corrupted)
+	- All the other errors (file handling, pointers problem...)
