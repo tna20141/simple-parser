@@ -1,0 +1,86 @@
+SIMPLE PARSER
+=============
+
+1. Overview
+
+The simple parser can be separated into 2 big modules:
+	- XML Parsing module
+	- XML Document generation module
+Each module is quite separated from the other. The only thing linking the two is the DOM tree 
+structure.
+
+2. Data structure
+
+2.1. DOM tree
+
+2.1.1. Requirements
+
+The DOM tree structure will have to include the following types of node:
+	- Element node
+	- Attribute node
+	- Text node
+The nodes in a tree must be able to link to each other using a pointer mechanism. Parents must be
+able to reference their children and children must be able to reference their parents.
+
+2.1.2. Detailed design
+
+2.1.2.1. Element node
+
+Each kind of node in a tree can be implemented as a struct. The fields of an element node that the 
+struct should include are:
+	- Name
+	- Parent pointer
+	- Children pointers
+		+ Attribute pointers
+		+ Text node pointers
+		+ Element node pointers
+	- Single tag or not
+
+2.1.2.2. Attribute node
+
+The fields of an attribute node that the struct should include are:
+	- Name
+	- Value
+	- Parent pointer
+
+2.1.2.3. Text node
+
+The fields of a text node that the struct should include are:
+	- Content
+	- Parent pointer
+
+2.2. XML declaration
+
+For now, let's just use a string to store the XML declaration.
+
+2.3. Other intermediate data structures
+
+2.3.1. FIFO stack
+
+Stack is used for storing elements while parsing XML documents. The nature of XML markup language 
+makes FIFO stack a perfect tool to parse a document's element tags.
+
+3. Workflow
+
+3.1. XML Parsing
+
+The workflow of the XML parsing function can be described (and implemented) as a FSM, presented in 
+doc/images/xml-parsing-fsm.jpeg.
+Errors can happen in each of these states and may disrupt the parsing process of the parser.
+
+3.2. XML document generation
+
+When already having a DOM tree, the XML document can be generated using a tree traversing algorithm 
+(like depth-first search). The only issue to pay attention to is the formatting (whitespaces, new 
+lines, indentation...).
+
+4. Utility functions
+
+This section lists important utility functions that are used in the code. The functions are listed 
+by what they do, not by names (this is just a design draft).
+	- Scan for a series of whitespaces
+	- Scan for a series of whitespaces, turn up error if no whitespace is found
+	- Scan for a string, stop at whitespace or a delimiter
+	- Trim whitespace from a string
+
+5. Error handling
