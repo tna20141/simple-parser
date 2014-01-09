@@ -1,0 +1,2 @@
+look at how to use must-install libraries
+have a look at pkg-config
