@@ -9,6 +9,8 @@ The simple parser can be separated into 2 big modules:
 Each module is quite separated from the other. The only thing linking the two is the DOM tree 
 structure.
 
+Version: 1.1
+
 2. Data structure
 
 2.1. DOM tree
@@ -82,5 +84,151 @@ by what they do, not by names (this is just a design draft).
 	- Scan for a series of whitespaces, turn up error if no whitespace is found
 	- Scan for a string, stop at whitespace or a delimiter
 	- Trim whitespace from a string
+These functions were developed in custom-clib.
 
-5. Error handling
+5. Specific workflow design
+
+5.1. XML Parsing
+
+5.1.1. 'Void' state
+
+This state is when the parser is not going through any element tag or text node. It is about to 
+enter a mode of parsing one of those.
+
+Pseudo code:
+	eat_whitespaces()
+	rv = handle_tag_starting()
+	if (rv == 2)
+		to_state(Element closign tag)
+	else if (rv == 1)
+		to_state(Element opening tag)
+	else
+		to_state(Text)
+
+The funtion handle_tag_starting() might be used in many states and have the following pseudo code:
+	c = fgetc()
+	if (c == '<')
+		c2 = fgetc()
+		if (c2 == '/')
+			return 2
+		else
+			rewind(1)
+			return 1
+	else
+		rewind(1)
+		return 0
+
+5.1.2. 'Element opening tag' state
+
+This state is when the parser is starting to go through an element opening tag.
+
+Pseudo code:
+	tag = fgets()
+	verify(tag)
+	push(elem_stack, tag)
+	add(current, tag)
+	current = tag
+	eat_whitespaces()
+	if (handle_tag_ending())
+		to_state(Void)
+	else
+		to_state(Attribute)
+
+The function handle_tag_ending() might be used in many states and have the following pseudo code:
+	c = fgetc()
+	if (c == '/')
+		c1 = fgetc()
+		if (c1 == '>')
+			pop(elem_stack)
+			return 1
+		else
+			error()
+	else if (c == '>')
+		return 1
+	else
+		rewind(1)
+		return 0
+
+
+5.1.3. 'Attribute' state
+
+This state is when the parser is starting to go through an attribute.
+
+Pseudo code:
+	att_key = trim(fget_before_delim("="))
+	verify(att_key)
+	forward(1)
+	att_value = remove("\"", fgets_ignore())
+	verify(att_value)
+	add(current, att_key, att_value)
+	eat_whitespaces()
+	if (handle_tag_ending())
+		to_state(Void)
+	else
+		to_state(Attribute)
+
+5.1.4. 'Text' state
+
+This state is when the parser is starting to go through a text node.
+
+Pseudo code:
+	text = trim(fget_before_delim("<"))
+	verify(text)
+	add(current, text)
+	rv = handle_tag_starting()
+	if (rv == 2)
+		to_state(Element closing tag)
+	else if (rv == 1)
+		to_state(Element opening tag)
+	else
+		error()
+
+5.1.5. 'Element closing tag' state
+
+This state is when the parser is starting to go through an element closing tag.
+
+Pseudo code:
+	tag = fget_before_delim(">")
+	verify(tag)
+	if (tag != pop(elem_stack))
+		error()
+	fgetc()
+	up(current)
+	eat_whitespaces()
+	rv = handle_tag_starting()
+	if (rv == 2)
+		error()
+	else if (rv == 1)
+		to_start(Element opening tag)
+	else
+		to_state(Text)
+
+5.2. XML document generation
+
+Given a DOM tree, generating the XML document could be done using a recursive algorithm like 
+depth-first search. The pseudo code is as follow:
+
+write_dps(doc, node)
+	if (node.type == text)
+		writeln(doc, node.content)
+	else
+		write_opening_tag(doc, node)
+		foreach (att in node.attributes)
+			write_att(doc, att)
+		if (node.single_tag)
+			writeln(doc, '/>')
+		else
+			writeln(doc, '>')
+			indent()
+			foreach(child in node.nodes)
+				write_dps(doc, child)
+			unindent()
+			write_closing_tag(doc, node)
+
+generate(doc, tree, declaration)
+	writeln(doc, declaration)
+	write_dps(doc, tree.root)
+
+6. Error handling
+
+This section will be taken care of later.

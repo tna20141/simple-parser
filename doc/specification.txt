@@ -8,6 +8,8 @@ This simple parser is used to parse XML documents. It has 2 main purposes:
 	- Genrate the original XML documents from the DOM trees
 More functionality can be added to the parser in the future.
 
+Version: 1.0
+
 2. PURPOSE
 
 The purpose of the making of this program is for educational, training purposes and also for fun. 
