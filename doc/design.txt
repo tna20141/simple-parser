@@ -229,6 +229,13 @@ generate(doc, tree, declaration)
 	writeln(doc, declaration)
 	write_dps(doc, tree.root)
 
-6. Error handling
+6. Modulization
+
+The parser will be implemented as 3 main modules (or files):
+	- parse.c: take care of XML parsing
+	- gen.c: take care of XML document generation
+	- main.c: main program, provides an interface to test and a simple use of the parser
+
+7. Error handling
 
 This section will be taken care of later.

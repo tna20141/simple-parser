@@ -1,3 +1,3 @@
-[submodule "lib/clib"]
-	path = lib/clib
+[submodule "lib/custom-clib"]
+	path = lib/custom-clib
 	url = https://github.com/tna20141/custom-clib
