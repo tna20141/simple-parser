@@ -8,7 +8,8 @@
 
 /* error codes */
 typedef enum {
-	ERROR_READ_FILE = -1
+	ERROR_READ_FILE = -1,
+	ERROR_SYNTAX = -2
 } error_type;
 
 /* struct containing all info about xml errors */

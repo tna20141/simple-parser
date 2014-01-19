@@ -42,7 +42,7 @@ typedef enum {
 
 static inline void to_state(parse_states state, FILE *f, struct parse_info *pinfo);
 
-void get_declaration(FILE *f, struct xml_declaration *xmldec);
+void get_declaration(FILE *f, struct xml_declaration *xmldec, struct xml_error *error);
 
 void parse(const char *filename, struct xml_data *xmldata);
 

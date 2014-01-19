@@ -14,4 +14,6 @@ int verify_att_value(const char *att_value);
 
 int verify_text(const char *text);
 
+int validate_declaration(const char *text);
+
 #endif
