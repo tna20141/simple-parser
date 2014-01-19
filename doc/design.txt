@@ -99,7 +99,7 @@ Pseudo code:
 	eat_whitespaces()
 	rv = handle_tag_starting()
 	if (rv == 2)
-		to_state(Element closign tag)
+		to_state(Element closing tag)
 	else if (rv == 1)
 		to_state(Element opening tag)
 	else
@@ -234,6 +234,7 @@ generate(doc, tree, declaration)
 The parser will be implemented as 3 main modules (or files):
 	- parse.c: take care of XML parsing
 	- gen.c: take care of XML document generation
+	- validate.c: take care of validating XML elements
 	- main.c: main program, provides an interface to test and a simple use of the parser
 
 7. Error handling
